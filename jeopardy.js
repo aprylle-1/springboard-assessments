@@ -110,6 +110,7 @@ function handleClick(evt) {
         else if(categories[category].clues[clue].showing == 'question'){
             const getAnswer = categories[category].clues[clue].answer;
             const first = getAnswer[0] + getAnswer[1] + getAnswer[2]
+            //had to find a way to remove the i tags from retrieved answers
             if (first === '<i>'){
                 let newInnerText = ""
                 for (let i = 3; i < getAnswer.length - 4; i++){
@@ -121,6 +122,7 @@ function handleClick(evt) {
             else{
                 evt.target.innerText = (categories[category].clues[clue].answer);
                 categories[category].clues[clue].showing = 'answer'
+                evt.target.classList.add('answer');
             }
         }
     }
@@ -134,6 +136,8 @@ function showLoadingView() {
     //will show loading class on the html
     //loading css from https://www.w3schools.com/howto/howto_css_loader.asp
     const $loader = $('#loader')
+    const $btnNewGame = $('#new-game')
+    $btnNewGame.html('Loading...');
     $loader.show()
 }
 
@@ -141,6 +145,8 @@ function showLoadingView() {
 
 function hideLoadingView() {
     const $loader = $('#loader')
+    const $btnNewGame = $('#new-game')
+    $btnNewGame.html('New Game');
     $loader.hide();
 }
 

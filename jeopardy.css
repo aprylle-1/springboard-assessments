@@ -63,3 +63,7 @@ header{
 .question {
   height: 150px;
 }
+
+.answer{
+  background-color: #28a200 !important;
+}
