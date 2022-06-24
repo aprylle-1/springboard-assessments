@@ -25,13 +25,10 @@ table thead td{
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 
-table tr {
-  background-color:  #115ff4;
-  color: white;
-}
-
 table tr td{
   padding: 10px 10px 10px 10px;
+  background-color:  #115ff4;
+  color: white;
   text-align: center;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
