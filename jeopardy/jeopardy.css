@@ -1,0 +1,66 @@
+/* some colors you may find useful:
+  #115ff4
+  #060ce9
+  #28a200
+  #8d2ab5
+  #74119c
+*/
+table, th, td {
+  border: 1px solid;
+}
+table{
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+table thead{
+  background-color: #060ce9;
+  color: white;
+}
+
+table thead td{
+  padding: 10px 10px 10px 10px;
+  text-align: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+table tr td{
+  padding: 10px 10px 10px 10px;
+  background-color:  #115ff4;
+  color: white;
+  text-align: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+header{
+  padding: 10px 10px 10px 10px;
+  text-align: center;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  background-color: #060ce9;
+  color: white;
+  border: 1px black solid;
+}
+
+#loader {
+  border: 16px solid #f3f3f3; /* Light grey */
+  border-top: 16px solid #3498db; /* Blue */
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 2s linear infinite;
+  margin: auto;
+  margin-top: 75px!important;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.question {
+  height: 150px;
+}
+
+.answer{
+  background-color: #28a200 !important;
+}
