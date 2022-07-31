@@ -1,0 +1,42 @@
+.form-container{
+    display: flex;
+    margin: 10px 10px 10px 10px;
+    justify-content: center;
+}
+.form-content{
+    width: 50%
+}
+
+body{
+    text-align: center;
+    margin: auto;
+}
+
+.error{
+    background-color: red;
+    color: white;
+    width: 70%;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px 10px 10px;
+}
+
+label{
+    width: 120px;
+    margin-right: 20px;
+    text-align: left;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#converted-value{
+    margin: 20px 10px 10px 10px;
+    padding: 10px 10px 10px 10px;
+    font-size: 1.25rem;
+    width: 400px;
+    color: white;
+    background-color: green;
+}
