@@ -87,7 +87,7 @@ class Company {
       }
       const queries = filter_keys.map((key, idx) => `${key_query[key]} $${idx + 1}`)
       /**Creating on the SQL query based on the values from the array query*/
-      let query = `SELECT handle, name, num_employees AS "numEmployees", logo_url AS "logoUrl" FROM companies WHERE`
+      let query = `SELECT handle, name, description, num_employees AS "numEmployees", logo_url AS "logoUrl" FROM companies WHERE`
       queries.forEach((query_val, idx) => {
         if (idx === 0){
           query += ` ${query_val}`
