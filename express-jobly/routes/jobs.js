@@ -29,8 +29,8 @@ router.post('/', ensureAdmin, async (req, res, next)=>{
             const errs = validator.errors.map(e => e.stack);
             throw new BadRequestError (errs);
         }
-        const {title, salary, equity, compHandle} = req.body;
-        const job = await Job.create({title, salary, equity, compHandle});
+        const {title, salary, equity, companyHandle} = req.body;
+        const job = await Job.create({title, salary, equity, companyHandle});
         console.log(job)
         return res.status(201).json({ job });
     }
