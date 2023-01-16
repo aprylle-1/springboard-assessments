@@ -13,11 +13,11 @@ class Job {
    *
    * */
 
-    static async create ({title, salary, equity, compHandle}) {
+    static async create ({title, salary, equity, companyHandle}) {
         const company = await db.query(
             `SELECT handle 
              FROM companies
-             WHERE handle = $1`,[compHandle]);
+             WHERE handle = $1`,[companyHandle]);
 
         if (!company.rows) {
             throw new BadRequestError(`Invalid company: No company with handle ${handle}`)
@@ -27,12 +27,12 @@ class Job {
             `INSERT INTO jobs
              (title, salary, equity, company_handle)
              VALUES ($1, $2, $3, $4)
-             RETURNING title, salary, equity, company_handle AS "companyHandle"`,
+             RETURNING id, title, salary, equity, company_handle AS "companyHandle"`,
              [
                 title,
                 salary,
                 equity,
-                compHandle
+                companyHandle
              ]
         );
 
@@ -48,8 +48,8 @@ class Job {
    **/
     static async findAll() {
         const results = await db.query(
-            `SELECT title, salary, equity, company_handle
-             AS compHandle
+            `SELECT id, title, salary, equity, company_handle
+             AS "companyHandle"
              FROM jobs;`)
 
         const jobs = results.rows
@@ -66,7 +66,7 @@ class Job {
 
     static async get(id) {
         const result = await db.query(
-            `SELECT title, salary, equity, company_handle
+            `SELECT id, title, salary, equity, company_handle
              AS "companyHandle"
              FROM jobs
              WHERE id = $1`,
@@ -110,10 +110,11 @@ class Job {
             `UPDATE jobs
              SET ${setCols}
              WHERE id = ${idx}
-             RETURNING title,
+             RETURNING id,
+                       title,
                        salary,
                        equity,
-                       company_handle AS "compHandle"
+                       company_handle AS "companyHandle"
             `,
             [...values, id]);
 
