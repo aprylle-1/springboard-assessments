@@ -44,11 +44,17 @@ class Job {
 
  /** Find all jobs.
    *
-   * Returns [{ title, salary, equity, companyHandle}, ...]
+   * Returns [{ id, title, salary, equity, companyHandle}, ...]
    * 
    **/
     static async findAll(filter) {
-        const keys = Object.keys(filter)
+        const curr_keys = Object.keys(filter)
+        let keys = []
+        curr_keys.forEach(key => {
+            if (["title", "minSalary", "hasEquity"].includes(key)){
+                keys.push(key)
+            }
+        })
         if (keys.length === 0){
             const results = await db.query(
                 `SELECT id, title, salary, equity, company_handle
@@ -85,7 +91,7 @@ class Job {
                     query += " AND "
                 }
                 if (key === "hasEquity") {
-                    if (filter["hasEquity"] === true){
+                    if (filter["hasEquity"] === "true"){
                         query += `${key_query["hasEquity"]["true"]}`
                     }
                     else{

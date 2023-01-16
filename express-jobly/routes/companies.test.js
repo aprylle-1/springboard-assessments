@@ -113,6 +113,13 @@ describe("GET /companies", function () {
   test("works with filters, minEmployees only", async function () {
     const resp = await request(app).get("/companies?minEmployees=1");
     expect(resp.body).toEqual({"companies" : [
+       {
+         handle: "c1",
+         name: "C1",
+         description: "Desc1",
+         numEmployees: 1,
+         logoUrl: "http://c1.img"
+       },
         {
           handle: "c2",
           name: "C2",
@@ -131,7 +138,7 @@ describe("GET /companies", function () {
   });
 
   test("works with filters, maxEmployees only", async function () {
-    const resp = await request(app).get("/companies?maxEmployees=3");
+    const resp = await request(app).get("/companies?maxEmployees=2");
     expect(resp.body).toEqual({"companies" : [
         {
           handle: "c1",

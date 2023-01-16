@@ -111,58 +111,63 @@ describe("GET /companies", function () {
     });
   });
 
-//   test("works with filters, name only", async function () {
-//     const resp = await request(app).get("/companies?name=c1");
-//     expect(resp.body).toEqual({"companies" : [
-//         {
-//           handle: "c1",
-//           name: "C1",
-//           description: "Desc1",
-//           numEmployees: 1,
-//           logoUrl: "http://c1.img",
-//         }
-//     ]});
-//   });
+  test("works with filters, title only", async function () {
+    const resp = await request(app).get("/jobs?title=j1");
+    expect(resp.body).toEqual({"jobs" : [
+        {
+          id : expect.any(Number),
+          title : "j1",
+          salary : 10000,
+          equity : "0.5",
+          companyHandle : 'c1'
+        }
+    ]});
+  });
 
-//   test("works with filters, minEmployees only", async function () {
-//     const resp = await request(app).get("/companies?minEmployees=1");
-//     expect(resp.body).toEqual({"companies" : [
-//         {
-//           handle: "c2",
-//           name: "C2",
-//           description: "Desc2",
-//           numEmployees: 2,
-//           logoUrl: "http://c2.img",
-//         },
-//         {
-//           handle: "c3",
-//           name: "C3",
-//           description: "Desc3",
-//           numEmployees: 3,
-//           logoUrl: "http://c3.img",
-//         }
-//     ]});
-//   });
+  test("works with filters, minSalary only", async function () {
+    const resp = await request(app).get("/jobs?minSalary=20000&fsfd=dasfsdfsd");
+    expect(resp.body).toEqual({"jobs" : [
+            {
+                id : expect.any(Number),
+                title : "j2",
+                salary : 20000,
+                equity : "0.75",
+                companyHandle : 'c2'
+            },
+            {
+                id : expect.any(Number),
+                title : "j3",
+                salary : 30000,
+                equity : "0.65",
+                companyHandle : 'c1'
+            }
+    ]});
+  });
 
-//   test("works with filters, maxEmployees only", async function () {
-//     const resp = await request(app).get("/companies?maxEmployees=3");
-//     expect(resp.body).toEqual({"companies" : [
-//         {
-//           handle: "c1",
-//           name: "C1",
-//           description: "Desc1",
-//           numEmployees: 1,
-//           logoUrl: "http://c1.img",
-//         },
-//         {
-//           handle: "c2",
-//           name: "C2",
-//           description: "Desc2",
-//           numEmployees: 2,
-//           logoUrl: "http://c2.img",
-//         }
-//     ]});
-//   });
+  test("works with filters, hasEquity only", async function () {
+    const newJob = {
+      title: "new",
+      salary: null,
+      equity : null,
+      companyHandle : "c1"
+    };
+    
+    const jobWithNullValue = await request(app)
+        .post("/jobs")
+        .send(newJob)
+        .set("authorization", `Bearer ${adminToken}`);
+    
+    const resp = await request(app).get("/jobs?hasEquity=false");
+    expect(resp.body).toEqual({"jobs" : [
+        {
+          id : expect.any(Number),
+          title: "new",
+          salary: null,
+          equity : null,
+          companyHandle : "c1"
+        }
+    ]});
+  });
 
   test("fails: test next() handler", async function () {
     // there's no normal failure event which will cause this route to fail ---

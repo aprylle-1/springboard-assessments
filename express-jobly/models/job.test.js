@@ -55,8 +55,8 @@ describe("create", function () {
 /************************************** findAll */
 
 describe("findAll", function () {
-    test("works: no filter", async function () {
-      let jobs = await Job.findAll();
+  test("works: no filter", async function () {
+      let jobs = await Job.findAll({});
       expect(jobs).toEqual([
         {
             id : expect.any(Number),
@@ -87,8 +87,33 @@ describe("findAll", function () {
             companyHandle : 'c3'
         }
       ]);
-    });
   });
+
+  test("works: with filter", async function () {
+      const filter = {
+        "title" : "j",
+        "minSalary" : "20000",
+        "hasEquity" : "true"
+      }
+      let jobs = await Job.findAll(filter);
+      expect(jobs).toEqual([
+        {
+            id : expect.any(Number),
+            title : "j2",
+            salary : 20000,
+            equity : "0.75",
+            companyHandle : 'c2'
+        },
+        {
+            id : expect.any(Number),
+            title : "j3",
+            salary : 30000,
+            equity : "0.65",
+            companyHandle : 'c1'
+        }
+      ]);
+  });
+});
 
 /************************************** get */
 

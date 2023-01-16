@@ -82,8 +82,8 @@ class Company {
       /** Create queries array that creates the SQL syntax depending on the filter key*/
       const key_query = {
         "name" : "name iLIKE",
-        "minEmployees" : "num_employees >",
-        "maxEmployees" : "num_employees <"
+        "minEmployees" : "num_employees >=",
+        "maxEmployees" : "num_employees <="
       }
       const queries = filter_keys.map((key, idx) => `${key_query[key]} $${idx + 1}`)
       /**Creating on the SQL query based on the values from the array query*/

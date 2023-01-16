@@ -21,7 +21,7 @@
             ]
         },
         "salary": {
-            "type": "integer",
+            "type": ["integer", "null"],
             "default": 0,
             "title": "The salary Schema",
             "examples": [
@@ -29,7 +29,7 @@
             ]
         },
         "equity": {
-            "type": "number",
+            "type": ["number", "null"],
             "maximum" : 1.000,
             "default": 0.0,
             "title": "The equity Schema",
