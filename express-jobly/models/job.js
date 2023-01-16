@@ -198,6 +198,17 @@ class Job {
 
     if (!job) throw new NotFoundError(`No job with ID ${id}`);
   }
+
+  /**
+   * Get all jobs associated with a specific company
+   */
+  static async findAllJobsForCompany(handle){
+    const result = await db.query(`SELECT id, title, salary, equity FROM jobs WHERE company_handle = $1`, [handle])
+    
+    const jobs = result.rows
+
+    return jobs;
+  }
 }
 
 module.exports = Job
