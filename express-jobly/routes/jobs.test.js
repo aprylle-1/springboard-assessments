@@ -19,7 +19,7 @@ beforeEach(commonBeforeEach);
 afterEach(commonAfterEach);
 afterAll(commonAfterAll);
 
-/************************************** POST /companies */
+/************************************** POST /jobs */
 
 describe("POST /jobs", function () {
     const newJob = {
@@ -71,7 +71,7 @@ describe("POST /jobs", function () {
   });
 });
 
-/************************************** GET /companies */
+/************************************** GET /jobs */
 
 describe("GET /companies", function () {
   test("ok for anon", async function () {
@@ -176,7 +176,7 @@ describe("GET /companies", function () {
   });
 });
 
-/************************************** GET /companies/:handle */
+/************************************** GET /jobs/:id */
 
 describe("GET /jobs/:id", function () {
   test("works for anon", async function () {
@@ -223,7 +223,7 @@ describe("GET /jobs/:id", function () {
   });
 });
 
-/************************************** PATCH /companies/:handle */
+/************************************** PATCH /jobs/:id */
 
 describe("PATCH /jobs/:id", function () {
   test("works for users", async function () {
@@ -297,7 +297,7 @@ describe("PATCH /jobs/:id", function () {
   });
 });
 
-/************************************** DELETE /companies/:handle */
+/************************************** DELETE /jobs/:id */
 
 describe("DELETE /companies/:handle", function () {
   test("works for users", async function () {

@@ -1,5 +1,6 @@
 "use strict";
 
+const e = require("express");
 const db = require("../db");
 const { BadRequestError, NotFoundError } = require("../expressError");
 const { sqlForPartialUpdate } = require("../helpers/sql");
@@ -46,15 +47,69 @@ class Job {
    * Returns [{ title, salary, equity, companyHandle}, ...]
    * 
    **/
-    static async findAll() {
-        const results = await db.query(
-            `SELECT id, title, salary, equity, company_handle
-             AS "companyHandle"
-             FROM jobs;`)
+    static async findAll(filter) {
+        const keys = Object.keys(filter)
+        if (keys.length === 0){
+            const results = await db.query(
+                `SELECT id, title, salary, equity, company_handle
+                 AS "companyHandle"
+                 FROM jobs;`)
+            
+            const jobs = results.rows
+            
+            return jobs;
+        }
 
-        const jobs = results.rows
+        else {
+            const key_query = {
+                "title" : "title iLIKE",
+                "minSalary" : "salary >=",
+                "hasEquity" : {
+                    "true" : `equity is NOT NULL`,
+                    "false" : `equity is NULL`
+                }
+              }
 
-        return jobs;
+            let query = 
+            `SELECT id, title, salary, equity, company_handle AS "companyHandle"
+             FROM jobs
+             WHERE
+            `
+            let count = 1
+            let filterValues = []
+            keys.forEach((key, idx) =>{
+                if (idx === 0) {
+                    query += " "
+                }
+                else {
+                    query += " AND "
+                }
+                if (key === "hasEquity") {
+                    if (filter["hasEquity"] === true){
+                        query += `${key_query["hasEquity"]["true"]}`
+                    }
+                    else{
+                        query += `${key_query["hasEquity"]["false"]}`
+                    }
+                }
+                else{
+                    if (key === "title"){
+                        filterValues.push(`%${filter[key]}%`)
+                    }
+                    else{
+                        filterValues.push(filter[key])
+                    }
+                    query += `${key_query[key]} $${count}`;
+                    count += 1;
+                }
+            })
+            
+            const results = await db.query(query, filterValues);
+            
+            const jobs = results.rows;
+
+            return jobs;
+        }
     }
 
   /** Given a job id, return data about job.
