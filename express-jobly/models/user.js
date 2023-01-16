@@ -204,6 +204,12 @@ class User {
 
     if (!user) throw new NotFoundError(`No user: ${username}`);
   }
+
+  /** Creates an application for the User */
+
+  static async apply(username, id){
+    let appliedJobs = await db.query(`SELECT id FROM jobs WHERE username = $1`, username)
+}
 }
 
 

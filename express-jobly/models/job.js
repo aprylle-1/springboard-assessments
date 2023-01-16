@@ -52,7 +52,17 @@ class Job {
         let keys = []
         curr_keys.forEach(key => {
             if (["title", "minSalary", "hasEquity"].includes(key)){
-                keys.push(key)
+                if (key === "hasEquity"){
+                    if (filter["hasEquity"] === "false"){
+                        keys = keys;
+                    }
+                    else{
+                        keys.push(key)
+                    }
+                }
+                else{
+                    keys.push(key)
+                }
             }
         })
         if (keys.length === 0){
@@ -70,12 +80,8 @@ class Job {
             const key_query = {
                 "title" : "title iLIKE",
                 "minSalary" : "salary >=",
-                "hasEquity" : {
-                    "true" : `equity is NOT NULL`,
-                    "false" : `equity is NULL`
+                "hasEquity" :  `equity > 0`
                 }
-              }
-
             let query = 
             `SELECT id, title, salary, equity, company_handle AS "companyHandle"
              FROM jobs
@@ -92,10 +98,7 @@ class Job {
                 }
                 if (key === "hasEquity") {
                     if (filter["hasEquity"] === "true"){
-                        query += `${key_query["hasEquity"]["true"]}`
-                    }
-                    else{
-                        query += `${key_query["hasEquity"]["false"]}`
+                        query += `${key_query["hasEquity"]}`
                     }
                 }
                 else{
@@ -106,6 +109,7 @@ class Job {
                         filterValues.push(filter[key])
                     }
                     query += `${key_query[key]} $${count}`;
+                    console.log(query)
                     count += 1;
                 }
             })

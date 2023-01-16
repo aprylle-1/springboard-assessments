@@ -73,7 +73,7 @@ describe("POST /jobs", function () {
 
 /************************************** GET /jobs */
 
-describe("GET /companies", function () {
+describe("GET /jobs", function () {
   test("ok for anon", async function () {
     const resp = await request(app).get("/jobs");
     expect(resp.body).toEqual({
@@ -144,7 +144,7 @@ describe("GET /companies", function () {
     ]});
   });
 
-  test("works with filters, hasEquity only", async function () {
+  test("works with filters, hasEquity = true", async function () {
     const newJob = {
       title: "new",
       salary: null,
@@ -157,17 +157,93 @@ describe("GET /companies", function () {
         .send(newJob)
         .set("authorization", `Bearer ${adminToken}`);
     
-    const resp = await request(app).get("/jobs?hasEquity=false");
+    const resp = await request(app).get("/jobs?hasEquity=true");
     expect(resp.body).toEqual({"jobs" : [
-        {
-          id : expect.any(Number),
-          title: "new",
-          salary: null,
-          equity : null,
-          companyHandle : "c1"
-        }
+            {
+                id : expect.any(Number),
+                title : "j1",
+                salary : 10000,
+                equity : "0.5",
+                companyHandle : 'c1'
+            },
+            {
+                id : expect.any(Number),
+                title : "j2",
+                salary : 20000,
+                equity : "0.75",
+                companyHandle : 'c2'
+            },
+            {
+                id : expect.any(Number),
+                title : "j3",
+                salary : 30000,
+                equity : "0.65",
+                companyHandle : 'c1'
+            },
+            {
+                id : expect.any(Number),
+                title : "j4",
+                salary : 10000,
+                equity : "0.1",
+                companyHandle : 'c3'
+            }
     ]});
-  });
+});
+
+test("works with filters, hasEquity = false", async function () {
+  const newJob = {
+    title: "new",
+    salary: null,
+    equity : null,
+    companyHandle : "c1"
+  };
+  
+  const jobWithNullValue = await request(app)
+      .post("/jobs")
+      .send(newJob)
+      .set("authorization", `Bearer ${adminToken}`);
+  
+  const resp = await request(app).get("/jobs?hasEquity=false");
+  expect(resp.body).toEqual({"jobs" : [
+          {
+              id : expect.any(Number),
+              title : "j1",
+              salary : 10000,
+              equity : "0.5",
+              companyHandle : 'c1'
+          },
+          {
+              id : expect.any(Number),
+              title : "j2",
+              salary : 20000,
+              equity : "0.75",
+              companyHandle : 'c2'
+          },
+          {
+              id : expect.any(Number),
+              title : "j3",
+              salary : 30000,
+              equity : "0.65",
+              companyHandle : 'c1'
+          },
+          {
+              id : expect.any(Number),
+              title : "j4",
+              salary : 10000,
+              equity : "0.1",
+              companyHandle : 'c3'
+          },
+          {
+              id : expect.any(Number),
+              title: "new",
+              salary: null,
+              equity : null,
+              companyHandle : "c1"
+          }
+  ]});
+});
+
+
 
   test("fails: test next() handler", async function () {
     // there's no normal failure event which will cause this route to fail ---
@@ -304,7 +380,7 @@ describe("PATCH /jobs/:id", function () {
 
 /************************************** DELETE /jobs/:id */
 
-describe("DELETE /companies/:handle", function () {
+describe("DELETE /jobs/:id", function () {
   test("works for users", async function () {
     const newJob = {
         title: "new",

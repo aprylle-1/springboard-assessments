@@ -130,5 +130,14 @@ router.delete("/:username", ensureLoggedIn, async function (req, res, next) {
   }
 });
 
+/** POST /[username]/jobs/[id]
+ * 
+ * Allows user to apply to a job
+ */
+
+router.post("/:username/jobs/:id", async function (req, res, next) {
+  console.log(req.params)
+})
+
 
 module.exports = router;
