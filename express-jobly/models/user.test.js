@@ -13,6 +13,7 @@ const {
   commonAfterEach,
   commonAfterAll,
 } = require("./_testCommon");
+const Job = require("./job");
 
 beforeAll(commonBeforeAll);
 beforeEach(commonBeforeEach);
@@ -117,6 +118,7 @@ describe("findAll", function () {
         lastName: "U1L",
         email: "u1@email.com",
         isAdmin: false,
+        jobs : []
       },
       {
         username: "u2",
@@ -124,6 +126,7 @@ describe("findAll", function () {
         lastName: "U2L",
         email: "u2@email.com",
         isAdmin: false,
+        jobs : []
       },
     ]);
   });
@@ -140,6 +143,7 @@ describe("get", function () {
       lastName: "U1L",
       email: "u1@email.com",
       isAdmin: false,
+      jobs : []
     });
   });
 
@@ -226,5 +230,26 @@ describe("remove", function () {
     } catch (err) {
       expect(err instanceof NotFoundError).toBeTruthy();
     }
+  });
+});
+
+/************************************** apply */
+
+describe("apply", function () {
+  test("works", async function () {
+    const newJob = {
+      title: "new",
+      salary: 1000,
+      equity : 0.75,
+      companyHandle : "c1"
+    };
+
+    const createdJob = await Job.create(newJob)
+    const jobId = createdJob.id 
+    
+    await User.apply("u1", jobId);
+    const res = await db.query(
+        "SELECT job_id FROM applications WHERE username='u1'");
+    expect(res.rows.length).toEqual(1);
   });
 });

@@ -7,6 +7,7 @@ const {
   NotFoundError,
   BadRequestError,
   UnauthorizedError,
+  ExpressError
 } = require("../expressError");
 
 const { BCRYPT_WORK_FACTOR } = require("../config.js");
@@ -102,7 +103,7 @@ class User {
    **/
 
   static async findAll() {
-    const result = await db.query(
+    let result = await db.query(
           `SELECT username,
                   first_name AS "firstName",
                   last_name AS "lastName",
@@ -111,7 +112,16 @@ class User {
            FROM users
            ORDER BY username`,
     );
+    const results = await Promise.all(result.rows.map(async user=>{
+      const username = user["username"]
+      const jobs = await db.query(`SELECT job_id AS "jobId" FROM applications WHERE username = $1`, [username])
 
+      const appliedJobs = jobs.rows.map(job=>job["jobId"])
+
+      user.jobs = appliedJobs;
+      return user;
+    }))
+    
     return result.rows;
   }
 
@@ -134,10 +144,13 @@ class User {
            WHERE username = $1`,
         [username],
     );
-
-    const user = userRes.rows[0];
-
+    
+    let user = userRes.rows[0];
     if (!user) throw new NotFoundError(`No user: ${username}`);
+    
+    const appliedJobs = await db.query(`SELECT job_id as "jobId" FROM applications WHERE username = $1`, [username])
+    const appliedJobsIds = appliedJobs.rows.map(job => job["jobId"])
+    user.jobs = appliedJobsIds
 
     return user;
   }
@@ -208,7 +221,19 @@ class User {
   /** Creates an application for the User */
 
   static async apply(username, id){
-    let appliedJobs = await db.query(`SELECT id FROM jobs WHERE username = $1`, username)
+    const userRes = await db.query (`SELECT username FROM users WHERE username = $1`, [username])
+    const jobRes = await db.query(`SELECT id FROM jobs WHERE id = $1`, [id])
+
+    if (!userRes.rows[0]) throw new NotFoundError(`No username ${username}`);
+    if (!jobRes.rows[0]) throw new NotFoundError(`No job with id ${id}`)
+
+    let duplicateCheck = await db.query(`SELECT job_id FROM applications WHERE username = $1 AND job_id = $2`, [username, id])
+    console.log(duplicateCheck)
+    if (duplicateCheck.rows.length > 0) throw new ExpressError("User has already applied for this job", 400);
+
+    let appliedJob = await db.query(
+      `INSERT INTO applications (username, job_id) VALUES ($1, $2) RETURNING job_id AS "jobId"`, [username, id])
+    return appliedJob.rows[0];
 }
 }
 

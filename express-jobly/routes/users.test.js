@@ -125,7 +125,8 @@ describe("GET /users", function () {
           firstName : "adminFirstName",
           lastName : "adminLastName",
           email: "testadmin@email.com",
-          isAdmin : true
+          isAdmin : true,
+          jobs : []
         },
         {
           username: "u1",
@@ -133,6 +134,7 @@ describe("GET /users", function () {
           lastName: "U1L",
           email: "user1@user.com",
           isAdmin: false,
+          jobs : []
         },
         {
           username: "u2",
@@ -140,6 +142,7 @@ describe("GET /users", function () {
           lastName: "U2L",
           email: "user2@user.com",
           isAdmin: false,
+          jobs : []
         },
         {
           username: "u3",
@@ -147,6 +150,7 @@ describe("GET /users", function () {
           lastName: "U3L",
           email: "user3@user.com",
           isAdmin: false,
+          jobs : []
         }
       ],
     });
@@ -184,6 +188,7 @@ describe("GET /users/:username", function () {
         lastName: "U1L",
         email: "user1@user.com",
         isAdmin: false,
+        jobs : []
       },
     });
   });
@@ -199,6 +204,7 @@ describe("GET /users/:username", function () {
         lastName: "U1L",
         email: "user1@user.com",
         isAdmin: false,
+        jobs : []
       },
     });
   });
@@ -337,3 +343,44 @@ describe("DELETE /users/:username", function () {
     expect(resp.statusCode).toEqual(404);
   });
 });
+
+/************************************** POST /users/:username/jobs/:id */
+
+describe("POST /users/:username/jobs/:id", function (){
+  const newJob = {
+    title: "new",
+    salary: 1000,
+    equity : 0.75,
+    companyHandle : "c1"
+  };
+
+  test("works for users : loggedin user is equal to username", async function() {
+    const job = await request(app)
+      .post(`/jobs`)
+      .send(newJob)
+      .set("authorization", `Bearer ${adminToken}`);
+
+    const id = job.body.job.id
+    
+    const resp = await request(app)
+      .post(`/users/u1/jobs/${id}`)
+      .set("authorization", `Bearer ${u1Token}`)
+
+    expect(resp.body).toEqual({ applied : id })
+      
+  })
+
+  test("unauth for anon", async function () {
+    const job = await request(app)
+    .post(`/jobs`)
+    .send(newJob)
+    .set("authorization", `Bearer ${adminToken}`);
+
+    const id = job.body.job.id
+    
+    const resp = await request(app)
+        .post(`/users/u1/jobs/${id}`)
+        
+    expect(resp.statusCode).toEqual(401);
+  });
+})

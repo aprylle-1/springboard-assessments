@@ -54,3 +54,33 @@ This was also implemented by utilizing the ensureAdmin middleware
 Run test for users:
 
     jest users.test.js
+
+## Part Four: Jobs
+
+### Created the following methods for the Job Model
+- Create
+- Find All with filtering (can be filtered using title, minSalary and hasEquity)
+- Get
+- Update
+- Remove
+
+### Create the following routes for /jobs
+- POST /jobs
+- GET /jobs with filtering
+- GET /jobs/:id
+- PATCH /jobs/:id
+- DELETE /jobs:id
+
+### Show Jobs for a Company
+The route GET /companies/:handle has been updated to include job openings for companues
+
+    { ... other data ... , jobs: [ { id, title, salary, equity}, ... ] }
+
+## Part Five: Job Applications
+Route POST /users/:username/jobs/:id has been added to the users routes
+
+The function User.apply has been made to add rows to the applications table
+
+The get-all info methods and the individual routes for users have been updated to include the IDs of the jobs that the user has applied for
+
+    { ..., jobs: [ jobId, jobId, ... ] }

@@ -135,8 +135,17 @@ router.delete("/:username", ensureLoggedIn, async function (req, res, next) {
  * Allows user to apply to a job
  */
 
-router.post("/:username/jobs/:id", async function (req, res, next) {
-  console.log(req.params)
+router.post("/:username/jobs/:id", ensureLoggedIn, async function (req, res, next) {
+  try{
+    const loggedInUser = res.locals.user
+    if (loggedInUser.username != req.params.username) throw new UnauthorizedError()
+    
+    const appliedJob = await User.apply(req.params.username, req.params.id)
+    return res.json({ applied : appliedJob.jobId });
+  }
+  catch(err){
+    return next(err)
+  }
 })
 
 
