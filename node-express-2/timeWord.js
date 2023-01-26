@@ -90,16 +90,4 @@ tenths.forEach((num, idx)=>{
     addOnes(idx + 2, num, minutes)
 })
 
-// console.log(timeWord("00:00"))
-// console.log(timeWord("00:12"))
-// console.log(timeWord("01:00"))
-// console.log(timeWord("06:01"))
-// console.log(timeWord("06:10"))
-// console.log(timeWord("06:18"))
-// console.log(timeWord("06:30"))
-// console.log(timeWord("10:34"))
-// console.log(timeWord("12:00"))
-// console.log(timeWord("12:09"))
-// console.log(timeWord("23:23"))
-
 module.exports = timeWord

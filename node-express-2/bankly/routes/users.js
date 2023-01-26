@@ -63,7 +63,11 @@ router.get('/:username', authUser, requireLogin, async function(
  *
  */
 
-router.patch('/:username', authUser, requireLogin, requireAdmin, async function(
+/*
+FIXES BUG #1 -- commented out requireAdmin to show what code was changed.
+Reason for this us found on bugs.md
+*/
+router.patch('/:username', authUser, requireLogin , /*requireAdmin,*/ async function(
   req,
   res,
   next

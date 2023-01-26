@@ -3,6 +3,7 @@ const db = require('../db');
 const ExpressError = require('../helpers/expressError');
 const sqlForPartialUpdate = require('../helpers/partialUpdate');
 const { BCRYPT_WORK_FACTOR } = require("../config");
+const e = require('express');
 
 class User {
 
@@ -75,17 +76,18 @@ class User {
 
   /** Returns list of user info:
    *
-   * [{username, first_name, last_name, email, phone}, ...]
+   * [{username, first_name, last_name}, ...]
    *
    * */
 
-  static async getAll(username, password) {
+  /*
+  * FIXES BUG #4
+  */
+  static async getAll() {
     const result = await db.query(
       `SELECT username,
                 first_name,
-                last_name,
-                email,
-                phone
+                last_name
             FROM users 
             ORDER BY username`
     );
@@ -111,9 +113,12 @@ class User {
     );
 
     const user = result.rows[0];
-
+    // FIXES BUG #3 -- added throw before new ExpressError...
     if (!user) {
-      new ExpressError('No such user', 404);
+      //BEFORE
+      // new ExpressError('No such user', 404);
+      //AFTER
+      throw new ExpressError('No such user', 404);
     }
 
     return user;
@@ -127,7 +132,30 @@ class User {
    *
    **/
 
+  /*
+  *FIXES BUG #2
+  *Included the following code so that data passed to sqlForPartialUpdate only includes first_name, last_name, phone, and email
+      for (let key of Object.keys(data)){
+      if (["first_name", "last_name", "phone", "email"].includes(key)){
+        continue;
+      }
+      else{
+        delete data[key]
+      }
+    }
+  */
   static async update(username, data) {
+    for (let key of Object.keys(data)){
+      if (["first_name", "last_name", "phone", "email"].includes(key)){
+        continue;
+      }
+      else{
+        delete data[key]
+      }
+    }
+    
+    if(Object.keys(data).length === 0) throw new ExpressError ('User info cannot be updated', 401)
+    
     let { query, values } = sqlForPartialUpdate(
       'users',
       data,
