@@ -11,17 +11,17 @@ Answer the following questions below:
 - What is JSX?
 > JSX allows HTML elements to be written in Javascript without having to use createElement()
 - How is a Component created in React?
-> Components are Javascript functions that return HTML elements. This are small reusable codes that can be rendered to show the HTML element that the Component returns
+> Components are Javascript functions that return HTML elements. These are small reusable codes that can be rendered to show the HTML element that the Component returns
 - What are some difference between state and props?
 > State is mutable while props is not.
 - What does "downward data flow" refer to in React?
 > This is where there is a smart parent component that contains the relevant state/data/functions that is needed for dynamic changes. The data from the smart parent component are then passed to child components as props.
 - What is a controlled component?
-> Controlled components are components that are dependent on the state of the component. An example of this are form inputs whose value is dependent on the state assigned to it as its value. They maintain their own state, which means as the inputs are being changed, the state is being changed which means the of the input itself is being changed.
+> Controlled components are components that are dependent on the state of the component. An example of this are form inputs whose value is dependent on the state assigned to it as its value. They maintain their own state, which means as you attempt to change the input, the state which the value of the input is dependent on, will also change.
 - What is an uncontrolled component?
 > Uncontrolled components are components whose values are not kept in a state but is dependent on what is on the DOM. An example of this is a file input from a user.
 - What is the purpose of the `key` prop when rendering a list of components?
-> It is to give a list item a unique id to prevent the app from getting confused when components are being loaded/unloaded
+> It is done to give a list item a unique id to prevent the app from getting confused when components are being loaded/unloaded
 - Why is using an array index a poor choice for a `key` prop when rendering a list of components?
 > Because arrays are mutable and their lengths/indexes can increase/decrease
 - Describe useEffect.  What use cases is it used for in React components?
