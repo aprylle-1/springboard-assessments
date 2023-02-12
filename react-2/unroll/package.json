@@ -1,0 +1,18 @@
+{
+  "name": "unroll",
+  "version": "1.0.0",
+  "description": "",
+  "main": "unroll.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^23.6.0"
+  },
+  "dependencies": {
+    "package.json": "^2.0.1"
+  }
+}
