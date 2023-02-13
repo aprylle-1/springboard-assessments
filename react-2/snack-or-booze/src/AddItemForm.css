@@ -1,0 +1,12 @@
+.AddItemForm input{
+    width: 100%;
+}
+
+.AddItemForm button {
+    width: 30%;
+    float: right;
+}
+
+.AddItemForm button:hover {
+    background-color: lightgreen;
+}

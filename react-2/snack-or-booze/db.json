@@ -27,6 +27,20 @@
       "description": "Crisp!",
       "recipe": "Open can.",
       "serve": "Immediately."
+    },
+    {
+      "id": "applee-cider-vinegar",
+      "name": "Apple Cider Vinegar",
+      "description": "Just straight up vinegar! Good for diets.",
+      "recipe": "Buy from the store.",
+      "serve": "Just make sure you have a glass."
+    },
+    {
+      "id": "regular-coke",
+      "name": "Regular Coke",
+      "description": "Just regular coke",
+      "recipe": "Get from the store.",
+      "serve": "Open can and serve."
     }
   ],
   "snacks": [
